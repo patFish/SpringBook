@@ -13,6 +13,8 @@ public class BankController {
 
 	@Autowired
 	BankService bank;
+	@Autowired
+	AccountDao accountDao;
 	
 	@ResponseBody
 	@RequestMapping("/test")
@@ -25,6 +27,7 @@ public class BankController {
 	public AccountVO findAccount(@PathVariable int accountNumber) throws AccountCreationException {
 		bank.createAccount(AccountType.SAVING, 1000000, 0);
 		AccountVO account = bank.lookupAccount(accountNumber);
+		accountDao.save((SavingAccount)account);
 		return account;
 	}
 	
@@ -32,6 +35,7 @@ public class BankController {
 	public AccountVO deposit(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
 		AccountVO account = bank.lookupAccount(accountNumber);
 		bank.deposit(account, amount);
+		accountDao.save((SavingAccount)account);
 		return account;
 	}
 	
@@ -39,6 +43,7 @@ public class BankController {
 	public AccountVO withdraw(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
 		AccountVO account = bank.lookupAccount(accountNumber);
 		bank.withdrawal(account, amount);
+		//accountDao.save((SavingAccount)account);
 		return account;
 	}
 }
