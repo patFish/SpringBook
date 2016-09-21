@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 public class BankServiceImpl implements AtmBankService, BankService {
 
 	private AccountFactory accountFactory = new AccountFactory();
-	private AccountDao accountDao = new SimpleAccountDao();
+	private AccountRepository accountDao = new SimpleAccountDao();
 
 	@Override
-	public AccountVO createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException {
+	public AccountMO createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException {
 		try {
 			AccountMO account;
 			// call factory to create account...

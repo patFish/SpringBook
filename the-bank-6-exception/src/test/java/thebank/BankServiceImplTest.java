@@ -4,11 +4,21 @@ import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes=BankApplication.class)
 public class BankServiceImplTest {
 
 	private BankServiceImpl bank;
 
+	@Autowired
+	AccountRepository accountRepository;
+	
 	@Before
 	public void setUp() {
 		bank = new BankServiceImpl();
@@ -119,5 +129,17 @@ public class BankServiceImplTest {
 		Assert.assertEquals(-500, creditAccount.getBalance());
 		return creditAccount;
 	}
+	
+	
+
+	
+	@Test
+	public void testName() throws Exception {
+		int balance = 100;
+		int creditLine =0;
+		AccountVO account = bank.createAccount(AccountType.SAVING, balance, creditLine);
+		accountRepository.save((SavingAccount)account);
+	}
+	
 
 }

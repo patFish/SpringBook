@@ -18,7 +18,7 @@ public class AccountFactory {
 			break;
 		}
 		account.book(balance);
-		account = new AccountLoggingProxy(account);
+		//account = new AccountLoggingProxy(account);
 		return account;
 	}
 

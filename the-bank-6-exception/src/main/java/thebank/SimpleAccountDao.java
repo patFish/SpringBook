@@ -3,7 +3,7 @@ package thebank;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SimpleAccountDao implements AccountDao {
+public class SimpleAccountDao implements AccountRepository {
 	private Map<Integer, AccountMO> accounts = new HashMap<>();
 
 	/* (non-Javadoc)

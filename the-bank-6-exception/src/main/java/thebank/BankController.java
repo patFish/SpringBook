@@ -14,7 +14,7 @@ public class BankController {
 	@Autowired
 	BankService bank;
 	@Autowired
-	AccountDao accountDao;
+	AccountRepository accountDao;
 	
 	@ResponseBody
 	@RequestMapping("/test")
