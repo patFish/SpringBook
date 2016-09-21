@@ -13,6 +13,9 @@ public abstract class Account implements AccountMO {
 	private int accountNumber;
 	protected int balance;
 
+	public Account() {
+	}
+	
 	public Integer getId() {
 		return id;
 	}
