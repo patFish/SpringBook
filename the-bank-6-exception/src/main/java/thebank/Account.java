@@ -2,10 +2,24 @@ package thebank;
 
 import javax.persistence.*;
 
+//@MappedSuperclass
+@Entity
 public abstract class Account implements AccountMO {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
 
 	private int accountNumber;
 	protected int balance;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public void setBalance(int balance) {
 		this.balance = balance;

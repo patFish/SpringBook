@@ -11,7 +11,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-@Controller
 @EnableAutoConfiguration
 @Configuration
 public class BankApplication {
@@ -24,12 +23,6 @@ public class BankApplication {
 				registry.addMapping("/**").allowedOrigins("http://localhost:3000");
 			}
 		};
-	}
-
-	@RequestMapping("/")
-	@ResponseBody
-	String home() {
-		return "Hello World!";
 	}
 
 	public static void main(String[] args) throws Exception {

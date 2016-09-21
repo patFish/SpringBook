@@ -2,20 +2,22 @@ package thebank;
 
 public interface BankService {
 
-	AccountVO createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException;
+	Account createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException;
 
 	/* (non-Javadoc)
-	 * @see thebank.AtmBankService#withdrawal(thebank.AccountVO, int)
+	 * @see thebank.AtmBankService#withdrawal(thebank.Account, int)
 	 */
-	void withdrawal(AccountVO accountVO, int amount) throws AccountOverdrawnException;
+	void withdrawal(Account Account, int amount) throws AccountOverdrawnException;
 
 	/* (non-Javadoc)
-	 * @see thebank.AtmBankService#deposit(thebank.AccountVO, int)
+	 * @see thebank.AtmBankService#deposit(thebank.Account, int)
 	 */
-	void deposit(AccountVO accountVO, int amount) throws AccountOverdrawnException;
+	void deposit(Account Account, int amount) throws AccountOverdrawnException;
 
-	void transfer(AccountVO fromAccount, AccountVO toAccount, int amount)
+	void transfer(Account fromAccount, Account toAccount, int amount)
 			throws FatalMoneyLossException, TransferFailedException;
 
-	AccountMO lookupAccount(int accountNumber);
+	Account lookupAccount(int accountNumber);
+	
+	public void saveAccount(Account account);
 }

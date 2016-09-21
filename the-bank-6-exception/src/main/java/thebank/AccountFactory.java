@@ -1,12 +1,15 @@
 package thebank;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class AccountFactory {
 
 	private int accountNumberCounter = 1;
 
-	public AccountMO createAccount(AccountType type, int balance, int creditLine) throws AccountOverdrawnException {
+	public Account createAccount(AccountType type, int balance, int creditLine) throws AccountOverdrawnException {
 		int accountNumber = this.retrieveAccountNumber();
-		AccountMO account;
+		Account account;
 		switch (type) {
 		case CREDIT:
 			CreditAccount creditAccount = new CreditAccount(accountNumber);

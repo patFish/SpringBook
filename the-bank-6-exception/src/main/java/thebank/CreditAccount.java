@@ -1,5 +1,8 @@
 package thebank;
 
+import javax.persistence.Entity;
+
+@Entity
 public class CreditAccount extends Account {
 
 	private int creditLine;

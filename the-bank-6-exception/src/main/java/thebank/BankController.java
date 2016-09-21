@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class BankController {
 
 	@Autowired
-	BankService bank;
-	@Autowired
-	AccountRepository accountDao;
+	BankService bankService;
 	
 	@ResponseBody
 	@RequestMapping("/test")
@@ -24,26 +22,26 @@ public class BankController {
 	
 
 	@RequestMapping(value = "/findAccount/{id}", method = RequestMethod.GET)
-	public AccountVO findAccount(@PathVariable int accountNumber) throws AccountCreationException {
-		bank.createAccount(AccountType.SAVING, 1000000, 0);
-		AccountVO account = bank.lookupAccount(accountNumber);
-		accountDao.save((SavingAccount)account);
+	public Account findAccount(@PathVariable int accountNumber) throws AccountCreationException {
+		bankService.createAccount(AccountType.SAVING, 1000000, 0);
+		Account account = bankService.lookupAccount(accountNumber);
+		bankService.saveAccount(account);
 		return account;
 	}
 	
 	@RequestMapping(value = "/deposit/{id,amount}", method = RequestMethod.GET)
-	public AccountVO deposit(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
-		AccountVO account = bank.lookupAccount(accountNumber);
-		bank.deposit(account, amount);
-		accountDao.save((SavingAccount)account);
+	public Account deposit(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
+		Account account = bankService.lookupAccount(accountNumber);
+		bankService.deposit(account, amount);
+		bankService.saveAccount(account);
 		return account;
 	}
 	
 	@RequestMapping(value = "/withdraw/{id,amount}", method = RequestMethod.GET)
-	public AccountVO withdraw(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
-		AccountVO account = bank.lookupAccount(accountNumber);
-		bank.withdrawal(account, amount);
-		//accountDao.save((SavingAccount)account);
+	public Account withdraw(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
+		Account account = bankService.lookupAccount(accountNumber);
+		bankService.withdrawal(account, amount);
+		bankService.saveAccount(account);
 		return account;
 	}
 }

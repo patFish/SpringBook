@@ -1,17 +1,21 @@
 package thebank;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BankServiceImpl implements AtmBankService, BankService {
-
-	private AccountFactory accountFactory = new AccountFactory();
-	private AccountRepository accountDao = new SimpleAccountDao();
+public class BankServiceImpl implements BankService {
+	
+	
+	private AccountFactory accountFactory;
+	
+	@Autowired
+	private SimpleAccountDao accountDao;
 
 	@Override
-	public AccountMO createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException {
+	public Account createAccount(AccountType type, int balance, int creditLine) throws AccountCreationException {
 		try {
-			AccountMO account;
+			Account account;
 			// call factory to create account...
 			account = accountFactory.createAccount(type, balance, creditLine);
 			accountDao.saveAccount(account);
@@ -25,29 +29,32 @@ public class BankServiceImpl implements AtmBankService, BankService {
 
 	}
 
+	public void saveAccount(Account account) {
+		accountDao.saveAccount(account);
+	}
 
 	@Override
-	public void withdrawal(AccountVO accountVO, int amount) throws AccountOverdrawnException {
+	public void withdrawal(Account Account, int amount) throws AccountOverdrawnException {
 		// TODO: verify amount is positive and handle exceptions
-		// TODO: do we r4lly need accountVO as parameter ? W hat if client has
+		// TODO: do we r4lly need Account as parameter ? W hat if client has
 		// only int accountNumber ?
-		AccountMO account = lookupAccount(accountVO.getAccountNumber());
+		Account account = lookupAccount(Account.getAccountNumber());
 		account.book(amount * -1);
 	}
 
 
 	@Override
-	public void deposit(AccountVO accountVO, int amount) throws AccountOverdrawnException {
+	public void deposit(Account Account, int amount) throws AccountOverdrawnException {
 		// TODO: verify amount is positive
-		AccountMO account = lookupAccount(accountVO.getAccountNumber());
+		Account account = lookupAccount(Account.getAccountNumber());
 		account.book(amount);
 	}
 
 	@Override
-	public void transfer(AccountVO fromAccount, AccountVO toAccount, int amount)
+	public void transfer(Account fromAccount, Account toAccount, int amount)
 			throws FatalMoneyLossException, TransferFailedException {
-		AccountMO fromMoAccount = lookupAccount(fromAccount.getAccountNumber());
-		AccountMO toMoAccount = lookupAccount(toAccount.getAccountNumber());
+		Account fromMoAccount = lookupAccount(fromAccount.getAccountNumber());
+		Account toMoAccount = lookupAccount(toAccount.getAccountNumber());
 
 		try {
 			this.withdrawal(fromMoAccount, amount);
@@ -72,17 +79,18 @@ public class BankServiceImpl implements AtmBankService, BankService {
 		}
 	}
 
-	void storeAccount(AccountMO account) {
+	void storeAccount(Account account) {
 		// accounts.put(account.getAccountNumber(), account);
 		accountDao.saveAccount(account);
 	}
 
-	public AccountMO lookupAccount(int accountNumber) {
+	public Account lookupAccount(int accountNumber) {
 //		 TODO: what if account does not exist in accounts map ?
 		// TODO: handle missing accounts
 		return accountDao.findAccount(accountNumber);
 	}
-
+	
+	@Autowired
 	public void setAccountFactory(AccountFactory accountFactory) {
 		this.accountFactory = accountFactory;
 	}
