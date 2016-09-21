@@ -32,14 +32,14 @@ public class BankController {
 		return account;
 	}
 	
-	@RequestMapping(value = "/findAccount/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/findAccount/{accountNumber}", method = RequestMethod.GET)
 	public Account findAccount(@PathVariable int accountNumber) throws AccountCreationException {
 		Account account = bankService.lookupAccount(accountNumber);
-		bankService.saveAccount(account);
+		//bankService.saveAccount(account);
 		return account;
 	}
 	
-	@RequestMapping(value = "/deposit/{id,amount}", method = RequestMethod.GET)
+	@RequestMapping(value = "/deposit/{accountNumber}/{amount}", method = RequestMethod.GET)
 	public Account deposit(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
 		Account account = bankService.lookupAccount(accountNumber);
 		bankService.deposit(account, amount);
@@ -47,7 +47,7 @@ public class BankController {
 		return account;
 	}
 	
-	@RequestMapping(value = "/withdraw/{id,amount}", method = RequestMethod.GET)
+	@RequestMapping(value = "/withdraw/{accountNumber}/{amount}", method = RequestMethod.GET)
 	public Account withdraw(@PathVariable int accountNumber,@PathVariable int amount) throws AccountCreationException, AccountOverdrawnException {
 		Account account = bankService.lookupAccount(accountNumber);
 		bankService.withdrawal(account, amount);
