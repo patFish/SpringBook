@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   render() {
-    fetch('http://localhost:8080/findAccount/').then(function(res){
+    fetch('http://localhost:8080/test').then(function(res){
       return res.text();
     }).then(function(body){
       console.log('response', body);
