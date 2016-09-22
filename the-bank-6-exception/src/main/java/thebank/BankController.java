@@ -60,7 +60,6 @@ public class BankController {
 			throws AccountCreationException, AccountOverdrawnException {
 
 		int firstDigit = Integer.parseInt(Integer.toString(accountNumber).substring(0, 1));
-		System.out.println(firstDigit);
 		if (firstDigit == 1) {
 			Account account = bankService.lookupAccount(accountNumber);
 			bankService.deposit(account, amount);
@@ -80,7 +79,6 @@ public class BankController {
 			throws AccountCreationException, AccountOverdrawnException {
 
 		int firstDigit = Integer.parseInt(Integer.toString(accountNumber).substring(0, 1));
-		System.out.println(firstDigit);
 		if (firstDigit == 1) {
 			Account account = bankService.lookupAccount(accountNumber);
 			bankService.withdrawal(account, amount);
