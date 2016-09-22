@@ -12,10 +12,6 @@ import org.springframework.web.client.RestTemplate;
 @RestController
 public class BankController {
 
-	public BankController() {
-		// TODO Auto-generated constructor stub
-	}
-
 	@Autowired
 	BankService bankService;
 
@@ -25,8 +21,7 @@ public class BankController {
 	}
 
 	@RequestMapping(value = "/saveAccount", method = RequestMethod.POST)
-	public Account createAccount(@RequestBody SavingAccount account) throws AccountCreationException {
-		// bankService.createAccount(AccountType.SAVING, 1000000, 0);
+	public Account createAccountController(@RequestBody SavingAccount account) throws AccountCreationException {
 		bankService.saveAccount(account);
 		return account;
 	}
@@ -44,10 +39,10 @@ public class BankController {
 	}
 
 	@RequestMapping(value = "/findAccount/{accountNumber}", method = RequestMethod.GET)
-	public Account findAccount(@PathVariable int accountNumber) throws AccountCreationException {
+	public Account findAccountController(@PathVariable int accountNumber) throws AccountCreationException {
 
 		int firstDigit = Integer.parseInt(Integer.toString(accountNumber).substring(0, 1));
-		System.out.println(firstDigit);
+
 		if (firstDigit == 1) {
 			Account account = bankService.lookupAccount(accountNumber);
 			return account;
@@ -61,7 +56,7 @@ public class BankController {
 	}
 
 	@RequestMapping(value = "/deposit/{accountNumber}/{amount}", method = RequestMethod.GET)
-	public Account deposit(@PathVariable int accountNumber, @PathVariable int amount)
+	public Account depositController(@PathVariable int accountNumber, @PathVariable int amount)
 			throws AccountCreationException, AccountOverdrawnException {
 
 		int firstDigit = Integer.parseInt(Integer.toString(accountNumber).substring(0, 1));
@@ -81,7 +76,7 @@ public class BankController {
 	}
 
 	@RequestMapping(value = "/withdraw/{accountNumber}/{amount}", method = RequestMethod.GET)
-	public Account withdraw(@PathVariable int accountNumber, @PathVariable int amount)
+	public Account withdrawController(@PathVariable int accountNumber, @PathVariable int amount)
 			throws AccountCreationException, AccountOverdrawnException {
 
 		int firstDigit = Integer.parseInt(Integer.toString(accountNumber).substring(0, 1));
