@@ -1,3 +1,7 @@
+body{
+  background-image: url("Spirale.gif");
+}
+
 .App {
   text-align: center;
 }
@@ -16,6 +20,13 @@
 
 .App-intro {
   font-size: large;
+}
+ul{
+  list-style-type: none;
+}
+
+li{
+  background-color: white;
 }
 
 @keyframes App-logo-spin {
