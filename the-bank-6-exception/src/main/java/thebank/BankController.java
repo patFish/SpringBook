@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @RequestMapping("/bank")
 @RestController
@@ -29,6 +29,18 @@ public class BankController {
 		// bankService.createAccount(AccountType.SAVING, 1000000, 0);
 		bankService.saveAccount(account);
 		return account;
+	}
+
+	@RequestMapping(value = "/accounts/test", method = RequestMethod.POST)
+	public void receiveMessageFromExternalBank(@RequestBody CommunicationMessage message) {
+
+	}
+
+	public void sendMessageToExternalBank(CommunicationMessage communicationMessage) {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "http://10.10.3.233:8080/accounts/test";
+		// CommunicationMessage result =
+		restTemplate.postForObject(url, communicationMessage, CommunicationMessage.class);
 	}
 
 	@RequestMapping(value = "/findAccount/{accountNumber}", method = RequestMethod.GET)
