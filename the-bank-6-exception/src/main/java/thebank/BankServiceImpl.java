@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BankServiceImpl implements BankService {
-	
-	
+
 	private AccountFactory accountFactory;
-	
+
 	@Autowired
 	private SimpleAccountDao accountDao;
 
@@ -38,16 +37,20 @@ public class BankServiceImpl implements BankService {
 		// TODO: verify amount is positive and handle exceptions
 		// TODO: do we r4lly need Account as parameter ? W hat if client has
 		// only int accountNumber ?
-		Account account = lookupAccount(Account.getAccountNumber());
-		account.book(amount * -1);
-	}
+		if (amount >= 0) {
+			Account account = lookupAccount(Account.getAccountNumber());
+			account.book(amount * -1);
+		}
 
+	}
 
 	@Override
 	public void deposit(Account Account, int amount) throws AccountOverdrawnException {
 		// TODO: verify amount is positive
-		Account account = lookupAccount(Account.getAccountNumber());
-		account.book(amount);
+		if (amount >= 0) {
+			Account account = lookupAccount(Account.getAccountNumber());
+			account.book(amount);
+		}
 	}
 
 	@Override
@@ -85,11 +88,11 @@ public class BankServiceImpl implements BankService {
 	}
 
 	public Account lookupAccount(int accountNumber) {
-//		 TODO: what if account does not exist in accounts map ?
+		// TODO: what if account does not exist in accounts map ?
 		// TODO: handle missing accounts
 		return accountDao.findAccount(accountNumber);
 	}
-	
+
 	@Autowired
 	public void setAccountFactory(AccountFactory accountFactory) {
 		this.accountFactory = accountFactory;
