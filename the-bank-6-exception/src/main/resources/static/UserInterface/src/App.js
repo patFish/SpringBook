@@ -100,7 +100,9 @@ class App extends Component {
     return (
       <div className="App">
       <div className="App-header">
+          <p  color="white">The Bank Team NULL</p>
       <img src={logo} className="App-logo" alt="TeamNullo" />
+
 
 
       </div>
@@ -109,7 +111,7 @@ class App extends Component {
       <div class="col-lg-6">
       <div class="input-group">
       <span class="input-group-btn">
-      <p color=>test</p>
+
       <button class="btn btn-default" type="button" onClick={this.handleTextChange} >Go!</button>
       </span>
       <input type="text" class="form-control" placeholder={this.state.accountNumber} ref="textField"  />
@@ -128,9 +130,10 @@ class App extends Component {
       <div class="input-group">
       <span class="input-group-btn">
       <button class="btn btn-default" type="button" onClick={this.depositAmount} >Einzahlen!</button>
-      <button class="btn btn-default" type="button" onClick={this.withdrawalAmount} >Abheben!</button>
+
       </span>
       <input type="text" class="form-control" placeholder={this.state.amount} ref="amountfield" />
+      <button class="btn btn-default" type="button" onClick={this.withdrawalAmount} >Abheben!</button>
       </div>
       </div>
       </div>

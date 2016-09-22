@@ -1,0 +1,13 @@
+Create Account: 
+curl -H "Content-Type: application/json" -X POST -d 
+"{"""accountNumber""":1,"""balance""":1000}" http://localhost:8080/bank/findAccount 
+
+
+Find Account:
+curl -H "Content-Type: application/json" -X GET http://localhost:8080/bank/findAccount/1 
+
+Deposit Account: 
+curl -H "Content-Type: application/json" -X GET http://localhost:8080/bank/deposit/1/1000
+
+Withdraw:
+curl -H "Content-Type: application/json" -X GET http://localhost:8080/bank/withdraw/1/1000
