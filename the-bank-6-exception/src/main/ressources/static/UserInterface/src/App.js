@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props){
     super(props);
 
-    this.state= {accountNummer: "", amount: "text"};
+    this.state= {accountNummer: "", amount: "text", balance: ""};
     this.jsondaten={id:"", accnr:""  ,balance:""};
     this.link={linkfetch:""};
     this.handleTextChange=this.handleTextChange.bind(this);
@@ -16,27 +16,30 @@ class App extends Component {
   }
 
   handleTextChange(){
-    debugger;
+
     var newValue= this.refs.textField.value;
     this.state={accountNummer:newValue};
     this.link={linkfetch:"http://localhost:8080/bank/findAccount/"+this.state.accountNummer};
     console.log(this.state.accountNummer);
-    this.fetchmethod();
+    this.fetchmethod((account) => {
+      console.log(account.balance);
+      this.setState({balance: account.balance});
+    });
   }
   handleAmount(){
     var newValueamount= this.refs.amountfield.value;
     this.setState({amount: newValueamount});
   }
 
-  fetchmethod(){
+  fetchmethod(callback){
     fetch(this.link.linkfetch).then(function(res){
-      return res.text();
+      return res.json();
     }).then(function(body){
-      debugger;
       console.log('response', body);
       console.log('length', body.length);
-      console.log('balance', JSON.parse(body).balance);
-      this.setJsondaten({name: JSON.parse(body).name});
+      console.log('balance', body.balance);
+
+      callback(body);
 
       //console.log('id' body.id);
       //this.variabll.id=body.id;
@@ -51,25 +54,41 @@ class App extends Component {
 
 
         </div>
-          <div>
-          <table>
-            <tr>
-              <td> {this.jsondaten.name}</td>
-            </tr>
-          </table>
-          <h2>{this.state.accountNummer}</h2>  <h2>{this.state.amount}</h2>
-            <div>
-            <div>
-            <input type="text" placeholder={this.state.accountNummer} ref="textField" placeholder='AccountNummer'  />
-            <input type="submit" onClick={this.handleTextChange} /> <br />
 
-            <input type="text" placeholder={this.state.amount} ref="amountfield" placeholder='Amount'  /><br />
-            <input type="submit" onClick={this.handleAmount} /> <br />
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onClick={this.handleTextChange} >Go!</button>
+                  </span>
+                  <input type="text" class="form-control" placeholder={this.state.accountNummer} ref="textField" placeholder='AccountNummer' />
+                  </div>
+                </div>
+            </div>
 
+            <div class= "row">
+              <ul>
+                <li>Balance: {this.state.balance} </li>
+              </ul>
             </div>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" onClick={this.handleAmount} >Buche!</button>
+                  </span>
+                  <input type="text" class="form-control" placeholder={this.state.amount} ref="amountfield" placeholder='Amount' />
+                  </div>
+                </div>
             </div>
-          </div>
-      </div>
+        </div>
+
+
+
+
+
+
     );
   }
 }
