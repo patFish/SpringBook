@@ -14,7 +14,7 @@ public class ControllerMonitor {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@AfterReturning("execution(* thebank.*Controller.*(..)) && args(account,..)")
-	public void logServiceAccess(JoinPoint joinPoint, Account account) {
+	public void logController(JoinPoint joinPoint, Account account) {
 		
 		logger.info("Completed: " + joinPoint + "from account " + account.getAccountNumber());
 	}
