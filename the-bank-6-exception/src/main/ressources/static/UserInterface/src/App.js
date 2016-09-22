@@ -1,75 +1,146 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from './Spirale.gif';
 import './App.css';
 
 class App extends Component {
   constructor(props){
     super(props);
 
-    this.state= {accountNummer: "", amount: "text"};
-    this.jsondaten={id:"", accnr:""  ,balance:""};
-    this.link={linkfetch:""};
+    this.state= {accountNumber: "", amount: "", balance: ""};
+
     this.handleTextChange=this.handleTextChange.bind(this);
-    this.handleAmount=this.handleAmount.bind(this);
-    this.fetchmethod=this.fetchmethod.bind(this);
+    this.depositAmount=this.depositAmount.bind(this);
+    this.fetchgetBalance=this.fetchgetBalance.bind(this);
+    this.withdrawalAmount=this.withdrawalAmount.bind(this);
+    this.fetchDeposit=this.fetchDeposit.bind(this);
+    this.fetchWithDrawal=this.fetchWithDrawal.bind(this);
 
   }
 
   handleTextChange(){
-    debugger;
+
     var newValue= this.refs.textField.value;
-    this.state={accountNummer:newValue};
-    this.link={linkfetch:"http://localhost:8080/bank/findAccount/"+this.state.accountNummer};
-    console.log(this.state.accountNummer);
-    this.fetchmethod();
+
+
+    console.log(this.state.accountNumber);
+    this.fetchgetBalance(newValue,(account) => {
+      console.log(account.balance);
+      this.setState({accountNumber:account.accountNumber});
+      this.setState({balance: account.balance});
+      console.log(this.state);
+    });
   }
-  handleAmount(){
+  depositAmount(){
     var newValueamount= this.refs.amountfield.value;
     this.setState({amount: newValueamount});
+
+
+    //this.state={accountNumber:newValue};
+    console.log("state", this.state);
+    console.log("accountnr", this.state.accountNumber)
+    console.log("amount",newValueamount);
+
+    this.fetchDeposit(this.state.accountNumber,newValueamount,(account) => {
+      console.log(account.balance);
+      this.setState({balance: account.balance});
+    });
+  }
+  withdrawalAmount(){
+    var newValueamount= this.refs.amountfield.value;
+    this.setState({amount: newValueamount});
+
+    this.fetchWithDrawal(this.state.accountNumber,newValueamount,(account) => {
+      console.log(account.balance);
+      this.setState({balance: account.balance});
+    })
   }
 
-  fetchmethod(){
-    fetch(this.link.linkfetch).then(function(res){
-      return res.text();
+  fetchgetBalance(newValue,callback){
+    var link="http://localhost:8080/bank/findAccount/"+newValue;
+    fetch(link).then(function(res){
+      return res.json();
     }).then(function(body){
-      debugger;
       console.log('response', body);
       console.log('length', body.length);
-      console.log('balance', JSON.parse(body).balance);
-      this.setJsondaten({name: JSON.parse(body).name});
+      console.log('balance', body.balance);
+
+      callback(body);
+
+      //console.log('id' body.id);
+      //this.variabll.id=body.id;
+    })
+  }
+  fetchDeposit(accountnr, newValueamount, callback){
+    var link="http://localhost:8080/bank/deposit/"+accountnr +"/" +newValueamount;
+    fetch(link).then(function(res){
+      return res.json();
+    }).then(function(body){
+      console.log('balance', body.balance);
+
+      callback(body);
 
       //console.log('id' body.id);
       //this.variabll.id=body.id;
     })
   }
 
+  fetchWithDrawal(accountnr, newValueamount, callback){
+    var link="http://localhost:8080/bank/withdraw/"+accountnr +"/" +newValueamount;
+    fetch(link).then(function(res){
+      return res.json();
+    }).then(function(body){
+      console.log('balance', body.balance);
+      callback(body);
+
+    })
+  }
+
+
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+      <div className="App-header">
+      <img src={logo} className="App-logo" alt="TeamNullo" />
 
 
-        </div>
-          <div>
-          <table>
-            <tr>
-              <td> {this.jsondaten.name}</td>
-            </tr>
-          </table>
-          <h2>{this.state.accountNummer}</h2>  <h2>{this.state.amount}</h2>
-            <div>
-            <div>
-            <input type="text" placeholder={this.state.accountNummer} ref="textField" placeholder='AccountNummer'  />
-            <input type="submit" onClick={this.handleTextChange} /> <br />
-
-            <input type="text" placeholder={this.state.amount} ref="amountfield" placeholder='Amount'  /><br />
-            <input type="submit" onClick={this.handleAmount} /> <br />
-
-            </div>
-            </div>
-          </div>
       </div>
+
+      <div class="row">
+      <div class="col-lg-6">
+      <div class="input-group">
+      <span class="input-group-btn">
+      <p color=>test</p>
+      <button class="btn btn-default" type="button" onClick={this.handleTextChange} >Go!</button>
+      </span>
+      <input type="text" class="form-control" placeholder={this.state.accountNumber} ref="textField"  />
+      </div>
+      </div>
+      </div>
+
+      <div class= "row">
+      <ul>
+      <li>Balance: {this.state.balance} </li>
+      </ul>
+      </div>
+
+      <div class="row">
+      <div class="col-lg-6">
+      <div class="input-group">
+      <span class="input-group-btn">
+      <button class="btn btn-default" type="button" onClick={this.depositAmount} >Einzahlen!</button>
+      <button class="btn btn-default" type="button" onClick={this.withdrawalAmount} >Abheben!</button>
+      </span>
+      <input type="text" class="form-control" placeholder={this.state.amount} ref="amountfield" />
+      </div>
+      </div>
+      </div>
+      </div>
+
+
+
+
+
+
     );
   }
 }
