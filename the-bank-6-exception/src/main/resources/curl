@@ -1,6 +1,5 @@
 Create Account: 
-curl -H "Content-Type: application/json" -X POST -d 
-"{"""accountNumber""":1,"""balance""":1000}" http://localhost:8080/bank/findAccount 
+curl -H "Content-Type: application/json" -X POST -d "{"""accountNumber""":1,"""balance""":1000}" http://localhost:8080/bank/saveAccount
 
 
 Find Account:
