@@ -15,7 +15,7 @@ public class BankController {
 	@Autowired
 	BankService bankService;
 
-	@RequestMapping("/test")
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String index() {
 		return "<b>Wohoooo, Spring Boot !!!</b>";
 	}
@@ -32,13 +32,13 @@ public class BankController {
 		if (message.getOperationType().equals(CommunicationTypeEnum.withdraw)) {
 			withdrawController(message.getAccountNumber(), message.getAmount());
 		} else {
-			depositController(message.getAccountNumber(), message.getAmount());
+			Account temp = depositController(message.getAccountNumber(), message.getAmount());
 		}
 	}
 
 	public CommunicationMessage sendMessageToExternalBank(CommunicationMessage communicationMessage) {
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://10.10.3.233:8080/accounts/test";
+		String url = "http://10.10.3.233:8080/accounts/book";
 		// CommunicationMessage result =
 		CommunicationMessage answer = restTemplate.postForObject(url, communicationMessage, CommunicationMessage.class);
 		return answer;
