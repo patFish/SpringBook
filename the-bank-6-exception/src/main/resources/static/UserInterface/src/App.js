@@ -56,7 +56,7 @@ class App extends Component {
   }
 
   fetchgetBalance(newValue,callback){
-    var link="http://localhost:8080/bank/findAccount/"+newValue;
+    var link="http://localhost:8050/bank/findAccount/"+newValue;
     fetch(link).then(function(res){
       return res.json();
     }).then(function(body){
@@ -71,7 +71,7 @@ class App extends Component {
     })
   }
   fetchDeposit(accountnr, newValueamount, callback){
-    var link="http://localhost:8080/bank/deposit/"+accountnr +"/" +newValueamount;
+    var link="http://localhost:8050/bank/deposit/"+accountnr +"/" +newValueamount;
     fetch(link).then(function(res){
       return res.json();
     }).then(function(body){
@@ -85,7 +85,7 @@ class App extends Component {
   }
 
   fetchWithDrawal(accountnr, newValueamount, callback){
-    var link="http://localhost:8080/bank/withdraw/"+accountnr +"/" +newValueamount;
+    var link="http://localhost:8050/bank/withdraw/"+accountnr +"/" +newValueamount;
     fetch(link).then(function(res){
       return res.json();
     }).then(function(body){

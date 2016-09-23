@@ -38,7 +38,7 @@ public class BankController {
 
 	public CommunicationMessage sendMessageToExternalBank(CommunicationMessage communicationMessage) {
 		RestTemplate restTemplate = new RestTemplate();
-		String url = "http://10.10.3.233:8080/accounts/book";
+		String url = "http://10.10.3.241:8050/accounts/book";
 		// CommunicationMessage result =
 		CommunicationMessage answer = restTemplate.postForObject(url, communicationMessage, CommunicationMessage.class);
 		return answer;
