@@ -27,15 +27,21 @@ public class BankController {
 	}
 
 	@RequestMapping(value = "/accounts/test", method = RequestMethod.POST)
-	public void receiveMessageFromExternalBank(@RequestBody CommunicationMessage message) {
-
+	public void receiveMessageFromExternalBank(@RequestBody CommunicationMessage message)
+			throws AccountCreationException, AccountOverdrawnException {
+		if (message.getOperationType().equals(CommunicationTypeEnum.withdraw)) {
+			withdrawController(message.getAccountNumber(), message.getAmount());
+		} else {
+			depositController(message.getAccountNumber(), message.getAmount());
+		}
 	}
 
-	public void sendMessageToExternalBank(CommunicationMessage communicationMessage) {
+	public CommunicationMessage sendMessageToExternalBank(CommunicationMessage communicationMessage) {
 		RestTemplate restTemplate = new RestTemplate();
 		String url = "http://10.10.3.233:8080/accounts/test";
 		// CommunicationMessage result =
-		restTemplate.postForObject(url, communicationMessage, CommunicationMessage.class);
+		CommunicationMessage answer = restTemplate.postForObject(url, communicationMessage, CommunicationMessage.class);
+		return answer;
 	}
 
 	@RequestMapping(value = "/findAccount/{accountNumber}", method = RequestMethod.GET)
@@ -65,11 +71,14 @@ public class BankController {
 			bankService.deposit(account, amount);
 			bankService.saveAccount(account);
 			return account;
-		} else if (firstDigit == 2) {
-			Account account = null;
-			return account;
 		} else {
-			throw new RuntimeException();
+			CommunicationMessage message = new CommunicationMessage(accountNumber, amount,
+					CommunicationTypeEnum.deposit);
+			SavingAccount account = new SavingAccount();
+			message = sendMessageToExternalBank(message);
+			account.setBalance(message.getAmount());
+			account.setId(message.getAccountNumber());
+			return account;
 		}
 
 	}
@@ -84,11 +93,14 @@ public class BankController {
 			bankService.withdrawal(account, amount);
 			bankService.saveAccount(account);
 			return account;
-		} else if (firstDigit == 2) {
-			Account account = null;
-			return account;
 		} else {
-			throw new RuntimeException();
+			CommunicationMessage message = new CommunicationMessage(accountNumber, amount,
+					CommunicationTypeEnum.withdraw);
+			SavingAccount account = new SavingAccount();
+			message = sendMessageToExternalBank(message);
+			account.setBalance(message.getAmount());
+			account.setId(message.getAccountNumber());
+			return account;
 		}
 
 	}

@@ -1,10 +1,13 @@
 package thebank;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
-//@MappedSuperclass
-@Entity
-public abstract class Account implements AccountMO {
+@MappedSuperclass
+// @Entity
+public class Account implements AccountMO {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,7 +18,7 @@ public abstract class Account implements AccountMO {
 
 	public Account() {
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -48,7 +51,10 @@ public abstract class Account implements AccountMO {
 		}
 	}
 
-	abstract boolean checkBookingPreCondition(int amount);
+	boolean checkBookingPreCondition(int amount) {
+		return true;
+
+	}
 
 	@Override
 	public int getBalance() {
