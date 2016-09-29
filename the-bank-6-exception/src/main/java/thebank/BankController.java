@@ -15,7 +15,7 @@ public class BankController {
 	@Autowired
 	BankService bankService;
 
-	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	@RequestMapping(value = "/test")
 	public String index() {
 		return "<b>Wohoooo, Spring Boot !!!</b>";
 	}
